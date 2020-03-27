@@ -309,6 +309,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5c5d8deb88fe54ab5d2ce1aa0203d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offset: {x: -8, y: 5, z: -8}
+  delay: 2
 --- !u!1 &1576778347 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3182588128539881662, guid: c00ac0d1b02e5be47a7c635588a6ce42,

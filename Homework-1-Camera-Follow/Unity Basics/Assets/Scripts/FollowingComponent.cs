@@ -1,22 +1,28 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowingComponent : MonoBehaviour
-{
+public class FollowingComponent : MonoBehaviour {
     [SerializeField]
     private Vector3 offset = new Vector3(-8, 5, -8);
 
     [SerializeField]
     private float smoothSpeed = 1.25f;
 
+    [SerializeField]
+    private float delay = .7f;
+
     // Update is called once per frame
-    void Update()
-    {
-        var bodyTransform = GameObject.Find("Body").transform;
-        Vector3 desiredPosition = bodyTransform.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(bodyTransform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
-        transform.LookAt(bodyTransform.position);
+    void Update() {
+        var bodyPosition = GameObject.Find("Body").transform.position;
+        Vector3 desiredPosition = bodyPosition + offset;
+        Vector3 smoothedPosition = Vector3.Lerp(bodyPosition, desiredPosition, smoothSpeed);
+        transform.LookAt(bodyPosition);
+
+        StartCoroutine(RepositionAfterDelay(smoothedPosition));
+    }
+
+    private IEnumerator RepositionAfterDelay(Vector3 newPosition) {
+        yield return new WaitForSeconds(delay);
+        transform.position = newPosition;
     }
 }
