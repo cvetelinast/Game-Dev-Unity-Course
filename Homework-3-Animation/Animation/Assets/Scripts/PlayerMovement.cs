@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private Animator animator;
     private new Rigidbody2D rigidbody;
-    private bool immediateCollisionOnHitHappened = false;
+    private bool firstCollisionOnHitPassed = false;
 
     void Start() {
         animator = GetComponent<Animator>();
@@ -37,10 +37,8 @@ public class PlayerMovement : MonoBehaviour {
         isCrouching = Input.GetKey(crouchKey);
         if (!isJumping) {
             animator.SetBool(Constants.IS_CROUCHING, isCrouching);
-            if (isCrouching) {
-                return;
-            }
         }
+        if (isCrouching) return;
 
         velocity.x = Input.GetAxis(Constants.HORIZONTAL_AXIS);
         animator.SetFloat(Constants.HORIZONTAL_MOVEMENT, Abs(velocity.x));
@@ -63,24 +61,36 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag(Constants.FLOOR_TAG)) {
-            SetIsJumping(false);
-            velocity.y = 0;
+            HandleFloorCollision();
         } else if (collision.collider.CompareTag(Constants.BLOCK_TAG)) {
-            if (IsAboveBlock()) {
-                SetIsJumping(false);
-            }
+            HandleBlockCollision(collision);
         } else if (collision.collider.CompareTag(Constants.MUSHROOM_TAG)) {
-            if (!immediateCollisionOnHitHappened) {
-                immediateCollisionOnHitHappened = true;
-            } else {
-                Grow();
-            }
+            HandleMushroomCollision();
+        }
+    }
+
+    private void HandleFloorCollision() {
+        SetIsJumping(false);
+        velocity.y = 0;
+    }
+
+    private void HandleBlockCollision(Collision2D collision) {
+        if (IsAboveBlock(collision.collider.transform.position)) {
+            SetIsJumping(false);
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision) {
         if (collision.collider.CompareTag(Constants.BLOCK_TAG)) {
             SetIsJumping(true);
+        }
+    }
+
+    private void HandleMushroomCollision() {
+        if (firstCollisionOnHitPassed) {
+            Grow();
+        } else {
+            firstCollisionOnHitPassed = true;
         }
     }
 
@@ -91,23 +101,13 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Grow() {
         animator.SetBool(Constants.IS_BIG, true);
-        GetComponent<BoxCollider2D>().size = new Vector2(0.14f, 0.3f);
+        if (GetComponent<BoxCollider2D>() != null) {
+            GetComponent<BoxCollider2D>().size = new Vector2(0.14f, 0.27f);
+        }
     }
 
-    private bool IsAboveBlock() {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
-        bool isAboveBlock = false;
-        if (hit.collider != null && hit.collider.CompareTag(Constants.BLOCK_TAG))
-            isAboveBlock = true;
-        return isAboveBlock;
+    private bool IsAboveBlock(Vector3 position) {
+        return transform.position.y > position.y;
     }
 
-    private bool IsBelowBlock() {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up);
-        bool isBelowBlock = false;
-        if (hit.collider != null && hit.collider.CompareTag(Constants.BLOCK_TAG))
-            isBelowBlock = true;
-
-        return isBelowBlock;
-    }
 }

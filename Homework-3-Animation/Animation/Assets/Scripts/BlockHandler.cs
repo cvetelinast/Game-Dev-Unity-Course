@@ -5,28 +5,28 @@ using UnityEngine;
 public class BlockHandler : MonoBehaviour {
     private Animator animator;
     public GameObject mushroomPrefab;
-    private bool wasBlockHit = false;
+    private bool firstCollisionOnHitPassed = false;
 
     void Start() {
         animator = GetComponent<Animator>();
     }
 
-    void Update() {
-    }
-
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (!wasBlockHit) {
-            if (collision.gameObject.CompareTag(Constants.PLAYER_TAG)) {
-                if (IsHitBelow()) {
-                    wasBlockHit = true;
-                    StartCoroutine(MoveUpAndDown());
-                    animator.SetBool(Constants.IS_HIT_NOW, true);
-
-                    var newMushroom = Instantiate(mushroomPrefab, transform.position, Quaternion.identity);
-                }
-            }
+        if (collision.gameObject.CompareTag(Constants.PLAYER_TAG)) {
+            HandlePlayerCollision();
         }
     }
+
+    private void HandlePlayerCollision() {
+        if (!firstCollisionOnHitPassed && IsHitBelow()) {
+            firstCollisionOnHitPassed = true;
+            StartCoroutine(HopOnHit());
+            animator.SetBool(Constants.IS_HIT_NOW, true);
+
+            Instantiate(mushroomPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
     private bool IsHitBelow() {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
         bool isHitBelow = false;
@@ -36,16 +36,9 @@ public class BlockHandler : MonoBehaviour {
         return isHitBelow;
     }
 
-    // private IEnumerator SpawnAfterDelay() {
-    //     yield return new WaitForSeconds(.7f);
-    //     animator.SetBool(Constants.IS_HIT_NOW, true);
-    //     var newMushroom = Instantiate(mushroomPrefab, transform.position, Quaternion.identity);
-    // }
-    private IEnumerator MoveUpAndDown() {
+    private IEnumerator HopOnHit() {
         transform.Translate(0f, 0.03f, 0f);
         yield return new WaitForSeconds(.1f);
         transform.Translate(0f, -0.03f, 0f);
-        //animator.SetBool(Constants.IS_HIT_NOW, true);
-        //var newMushroom = Instantiate(mushroomPrefab, transform.position, Quaternion.identity);
     }
 }
