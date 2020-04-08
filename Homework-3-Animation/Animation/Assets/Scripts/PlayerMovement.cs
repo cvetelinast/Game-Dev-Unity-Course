@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private Animator animator;
     private new Rigidbody2D rigidbody;
+    private bool immediateCollisionOnHitHappened = false;
 
     void Start() {
         animator = GetComponent<Animator>();
@@ -68,6 +69,12 @@ public class PlayerMovement : MonoBehaviour {
             if (IsAboveBlock()) {
                 SetIsJumping(false);
             }
+        } else if (collision.collider.CompareTag(Constants.MUSHROOM_TAG)) {
+            if (!immediateCollisionOnHitHappened) {
+                immediateCollisionOnHitHappened = true;
+            } else {
+                Grow();
+            }
         }
     }
 
@@ -80,6 +87,11 @@ public class PlayerMovement : MonoBehaviour {
     private void SetIsJumping(bool newIsJumping) {
         isJumping = newIsJumping;
         animator.SetBool(Constants.IS_JUMPING, newIsJumping);
+    }
+
+    private void Grow() {
+        animator.SetBool(Constants.IS_BIG, true);
+        GetComponent<BoxCollider2D>().size = new Vector2(0.14f, 0.3f);
     }
 
     private bool IsAboveBlock() {

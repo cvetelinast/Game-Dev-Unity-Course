@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class MushroomHandler : MonoBehaviour {
     private Animator animator;
-    private bool collisionOnSpawn = false;
+    private bool immediateCollisionOnHitHappened = false;
 
     void Start() {
         animator = GetComponent<Animator>();
@@ -13,8 +13,8 @@ public class MushroomHandler : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag(Constants.PLAYER_TAG)) {
-            if (!collisionOnSpawn) {
-                collisionOnSpawn = true;
+            if (!immediateCollisionOnHitHappened) {
+                immediateCollisionOnHitHappened = true;
             } else {
                 StartCoroutine(FadeTo(0.0f, 2.0f));
             }

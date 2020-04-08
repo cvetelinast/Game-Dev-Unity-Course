@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 public class BlockHandler : MonoBehaviour {
@@ -18,7 +19,9 @@ public class BlockHandler : MonoBehaviour {
             if (collision.gameObject.CompareTag(Constants.PLAYER_TAG)) {
                 if (IsHitBelow()) {
                     wasBlockHit = true;
+                    StartCoroutine(MoveUpAndDown());
                     animator.SetBool(Constants.IS_HIT_NOW, true);
+
                     var newMushroom = Instantiate(mushroomPrefab, transform.position, Quaternion.identity);
                 }
             }
@@ -31,5 +34,18 @@ public class BlockHandler : MonoBehaviour {
             isHitBelow = true;
 
         return isHitBelow;
+    }
+
+    // private IEnumerator SpawnAfterDelay() {
+    //     yield return new WaitForSeconds(.7f);
+    //     animator.SetBool(Constants.IS_HIT_NOW, true);
+    //     var newMushroom = Instantiate(mushroomPrefab, transform.position, Quaternion.identity);
+    // }
+    private IEnumerator MoveUpAndDown() {
+        transform.Translate(0f, 0.03f, 0f);
+        yield return new WaitForSeconds(.1f);
+        transform.Translate(0f, -0.03f, 0f);
+        //animator.SetBool(Constants.IS_HIT_NOW, true);
+        //var newMushroom = Instantiate(mushroomPrefab, transform.position, Quaternion.identity);
     }
 }
