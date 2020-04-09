@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void HandleBlockCollision(Collision2D collision) {
-        if (IsAboveBlock(collision.collider.transform.position)) {
+        if (IsAboveBlock(collision)) {
             SetIsJumping(false);
         }
     }
@@ -106,8 +106,30 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-    private bool IsAboveBlock(Vector3 position) {
-        return transform.position.y > position.y;
+    private bool IsAboveBlock(Collision2D collision) {
+        bool isHigher = transform.position.y > collision.collider.transform.position.y;
+
+        if (!isHigher) return false;
+
+        Vector2 blockBoundaries = BoundariesByX(
+                                    collision.collider as BoxCollider2D,
+                                    collision.collider.transform.position.x);
+
+        Vector2 playerBoundaries = BoundariesByX(
+                                    GetComponent<BoxCollider2D>(),
+                                    transform.position.x);
+
+        bool isExactlyAbove = !((playerBoundaries.x < blockBoundaries.x && playerBoundaries.y < blockBoundaries.x) ||
+                               (playerBoundaries.x > blockBoundaries.y && playerBoundaries.y > blockBoundaries.y));
+
+        return isExactlyAbove;
+    }
+
+    private Vector2 BoundariesByX(BoxCollider2D boxCollider, float positionX) {
+        float sizeX = boxCollider.size.x;
+        float left = positionX - (sizeX / 2);
+        float right = positionX + (sizeX / 2);
+        return new Vector2(left, right);
     }
 
 }
