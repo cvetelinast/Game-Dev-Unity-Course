@@ -22,7 +22,7 @@ public class AIMoveToPlayerState : StateMachineBehaviour {
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-
+        
         Vector3 vectorToPlayer = player.position - animator.transform.position;
         float distanceToPlayer = vectorToPlayer.magnitude;
 
@@ -35,10 +35,10 @@ public class AIMoveToPlayerState : StateMachineBehaviour {
 
     private void ChooseAttack(Animator animator) {
         float rand = Random.value;
-        // if (rand <= 0.5f) {
-        //     animator.SetTrigger("ShouldPunch");
-        // } else if (rand <= 1.0f) {
+        if (rand <= 0.5f) {
+            animator.SetTrigger("ShouldPunch");
+        } else if (rand <= 1.0f) {
             animator.SetTrigger("ShouldCrouch");
-        // }
+        }
     }
 }

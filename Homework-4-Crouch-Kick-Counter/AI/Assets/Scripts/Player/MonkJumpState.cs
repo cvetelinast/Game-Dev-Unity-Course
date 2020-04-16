@@ -3,24 +3,24 @@ using static Controlls;
 using static StateMachineUtil;
 
 public class MonkJumpState : StateMachineBehaviour {
-	
-	private MovementController movementController;
 
-	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		movementController = animator.GetComponent<MovementController>();
-		movementController.Jump();
-	}
+    private MovementController movementController;
 
-	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		DoMove(animator, movementController);
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        movementController = animator.GetComponent<MovementController>();
+        movementController.Jump();
+    }
 
-		if (movementController.Velocity.y < 0) {
-			animator.SetBool("IsJumping", false);
-			animator.SetBool("IsFalling", true);
-		}
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        DoMove(animator, movementController);
 
-		if (Input.GetKeyDown(attackKey)) {
-			animator.SetBool("IsJumpKicking", true);
-		}
-	}
+        if (movementController.Velocity.y < 0) {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsFalling", true);
+        }
+
+        if (IsAttacking()) {
+            animator.SetBool("IsJumpKicking", true);
+        }
+    }
 }
