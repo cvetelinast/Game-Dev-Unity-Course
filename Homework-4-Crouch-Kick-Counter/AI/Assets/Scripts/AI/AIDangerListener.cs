@@ -18,6 +18,7 @@ public class AIDangerListener : MonoBehaviour {
 
     void Update() {
         if (ShouldAttack()) {
+            Debug.Log("Should attack");
             ChooseDefenceStrategy();
         }
     }

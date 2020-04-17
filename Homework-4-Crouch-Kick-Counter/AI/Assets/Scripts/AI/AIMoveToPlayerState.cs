@@ -22,7 +22,7 @@ public class AIMoveToPlayerState : StateMachineBehaviour {
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        
+
         Vector3 vectorToPlayer = player.position - animator.transform.position;
         float distanceToPlayer = vectorToPlayer.magnitude;
 
