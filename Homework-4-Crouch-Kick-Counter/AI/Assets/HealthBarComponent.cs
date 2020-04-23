@@ -21,12 +21,22 @@ public class HealthBarComponent : MonoBehaviour {
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
 
-
-    private void Start() {
-        // SetMaxHealth(100f);
+    void Update() {
+        if ((IsFlippedInWorldSpace(transform) && !IsFlippedInLocalSpace(transform)) ||
+             (!IsFlippedInWorldSpace(transform) && IsFlippedInLocalSpace(transform))) {
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+        } else {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+        }
     }
 
-    void Update() {
-        // SetHealth(slider.value - 1);
+    private bool IsFlippedInWorldSpace(Transform transform) {
+        return IsFlipped(transform.lossyScale);
+    }
+    private bool IsFlippedInLocalSpace(Transform transform) {
+        return IsFlipped(transform.localScale);
+    }
+    private bool IsFlipped(Vector3 scale) {
+        return scale == new Vector3(-1f, 1f, 1f);
     }
 }
