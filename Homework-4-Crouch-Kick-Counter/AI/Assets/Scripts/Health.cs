@@ -1,19 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using static UnityEngine.Mathf;
 
 public class Health : MonoBehaviour {
 
     [SerializeField]
     private int health = 100;
-
     private Animator animator;
     public GameObject cross;
+
     [SerializeField]
-    private GameObject healthBar;
+    private GameObject healthBarComponent;
+    public Action<float> HealthChangedEvent;
 
     void Start() {
         animator = GetComponent<Animator>();
-        healthBar.GetComponent<HealthBarComponent>().SetMaxHealth(health);
+        EmitHealthChangedEvent(health);
     }
 
     public void SpawnCross() {
@@ -32,7 +34,7 @@ public class Health : MonoBehaviour {
     public void TakeDamage() {
         int damage = 10;
         health = Max(health - damage, 0);
-        healthBar.GetComponent<HealthBarComponent>().SetHealth(health);
+        EmitHealthChangedEvent(health);
         animator.SetInteger("Health", health);
         animator.SetTrigger("TookDamage");
     }
@@ -42,6 +44,12 @@ public class Health : MonoBehaviour {
             && collision.gameObject.CompareTag("Hitbox")) {
 
             TakeDamage();
+        }
+    }
+
+    private void EmitHealthChangedEvent(float newHealth) {
+        if (HealthChangedEvent != null) {
+            HealthChangedEvent(newHealth);
         }
     }
 }

@@ -319,6 +319,11 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1462025478}
+    - target: {fileID: 982838421839962019, guid: dcf5d11945bc4664f8e16e57546f5a6a,
+        type: 3}
+      propertyPath: healthBarComponent
+      value: 
+      objectReference: {fileID: 1462025478}
     - target: {fileID: 2119800140414340762, guid: dcf5d11945bc4664f8e16e57546f5a6a,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -358,6 +363,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468413536719599991, guid: 0a8f949d3c1f2d1449696b33e1d303b1,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468413536719599991, guid: 0a8f949d3c1f2d1449696b33e1d303b1,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468413536719599991, guid: 0a8f949d3c1f2d1449696b33e1d303b1,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1502165463725381377, guid: 0a8f949d3c1f2d1449696b33e1d303b1,
         type: 3}
@@ -7097,6 +7117,11 @@ PrefabInstance:
     - target: {fileID: 982838421839962019, guid: dcf5d11945bc4664f8e16e57546f5a6a,
         type: 3}
       propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 480579531}
+    - target: {fileID: 982838421839962019, guid: dcf5d11945bc4664f8e16e57546f5a6a,
+        type: 3}
+      propertyPath: healthBarComponent
       value: 
       objectReference: {fileID: 480579531}
     - target: {fileID: 2956449692274643502, guid: dcf5d11945bc4664f8e16e57546f5a6a,

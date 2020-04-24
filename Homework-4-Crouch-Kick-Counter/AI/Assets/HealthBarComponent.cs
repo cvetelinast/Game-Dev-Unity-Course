@@ -10,10 +10,9 @@ public class HealthBarComponent : MonoBehaviour {
     private Gradient gradient;
     [SerializeField]
     private Image fill;
-    public void SetMaxHealth(float health) {
-        slider.maxValue = health;
-        slider.value = health;
-        fill.color = gradient.Evaluate(1f);
+
+    public void Start() {
+        GetComponentInParent<Health>().HealthChangedEvent += SetHealth;
     }
 
     public void SetHealth(float health) {
