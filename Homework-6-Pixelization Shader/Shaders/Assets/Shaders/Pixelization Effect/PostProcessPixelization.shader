@@ -43,11 +43,9 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float pixelEffectStrength = (1 -_PixelEffectStrength) * 1000;
-                float2 uv = i.uv;
-                float2 newUv = (floor(uv * pixelEffectStrength) ) /pixelEffectStrength;
-                fixed4 color = tex2D(_MainTex, newUv);
-                return color;
+                float2 scale = (1 -_PixelEffectStrength) * _ScreenParams;
+                float2 uv = (floor(i.uv * scale) ) /scale;
+                return tex2D(_MainTex, uv);
             }
             ENDCG
         }
