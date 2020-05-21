@@ -10,14 +10,6 @@ public class HUDComponent : MonoBehaviour {
     [SerializeField] private Animator headAnimator;
     [SerializeField] private Animator weaponAnimator;
 
-    void Start() {
-
-    }
-
-    void Update() {
-
-    }
-
     private void OnEnable() {
         playerDamage.OnHealthChanged += changeHealth;
         playerDamage.OnArmorChanged += changeArmor;
@@ -38,6 +30,7 @@ public class HUDComponent : MonoBehaviour {
     private void changeAmmo(int newAmmoCount) {
         ammoDigitsController?.changeValue(newAmmoCount);
         headAnimator.SetTrigger("Shoot");
+        weaponAnimator.SetTrigger("Shoot");
     }
     private void changeArmor(int newArmor) {
         armorDigitsController?.changeValue(newArmor);

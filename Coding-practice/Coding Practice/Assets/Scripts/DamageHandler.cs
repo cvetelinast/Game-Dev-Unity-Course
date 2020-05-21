@@ -11,7 +11,7 @@ public class DamageHandler : MonoBehaviour {
     private int armor;
 
     private float nextActionTime = 0.0f;
-    public float period = 0.5f;
+    public float interval = 4f;
 
     void Start() {
         ChangeHealth(maxHealth);
@@ -19,8 +19,9 @@ public class DamageHandler : MonoBehaviour {
     }
 
     private void Update() {
+        // Simulate the shooting from Zombieman for test purposes
         if (Time.time > nextActionTime) {
-            nextActionTime += period;
+            nextActionTime += interval;
             TakeDamage();
         }
     }
