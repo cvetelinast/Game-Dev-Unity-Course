@@ -30,7 +30,8 @@ public class Health : MonoBehaviour {
     }
 
     public void SpawnCross() {
-        Vector2 spawnPosition = new Vector2 {
+        Vector2 spawnPosition = new Vector2
+        {
             x = transform.position.x,
             y = -0.1f
         };
@@ -39,6 +40,8 @@ public class Health : MonoBehaviour {
 
     public void Die() {
         Destroy(gameObject);
+        AudioManager.PlayDeathSound();
+        Debug.Log("DIE");
     }
 
     public void TakeDamage() {
@@ -52,7 +55,7 @@ public class Health : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.transform.parent != transform
             && collision.gameObject.CompareTag("Hitbox")) {
-
+            AudioManager.PlayHurtSound();
             TakeDamage();
         }
     }
