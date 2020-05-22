@@ -20,6 +20,7 @@ public class Health : MonoBehaviour {
     public GameObject cross;
 
     public event Action<int> OnDamageTaken;
+    public event Action OnDie;
 
     void Start() {
         animator = GetComponent<Animator>();
@@ -39,9 +40,8 @@ public class Health : MonoBehaviour {
     }
 
     public void Die() {
+        OnDie?.Invoke();
         Destroy(gameObject);
-        AudioManager.PlayDeathSound();
-        Debug.Log("DIE");
     }
 
     public void TakeDamage() {
@@ -55,7 +55,6 @@ public class Health : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.transform.parent != transform
             && collision.gameObject.CompareTag("Hitbox")) {
-            AudioManager.PlayHurtSound();
             TakeDamage();
         }
     }
